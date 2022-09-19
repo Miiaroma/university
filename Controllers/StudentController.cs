@@ -23,9 +23,16 @@ namespace University.Controllers
     }
 
     [HttpGet("{id}")]
-    public string GetOneStudent(int id) {
+    public IActionResult GetOneStudent(int id) {
         Student objStudent = new Student();
-        return objStudent.GetOneStudent(id);        
+        string result=objStudent.GetOneStudent(id); 
+        if(result.Length==0)
+        {
+            result="Student not found";
+            return NotFound(result);
+
+        }   
+        return Ok(result);    
     }
 
     [HttpPost()]
