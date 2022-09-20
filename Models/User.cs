@@ -61,8 +61,9 @@ namespace university.Models
         public async Task<int> InsertAsync()
         {
             using var cmd = Db.Connection.CreateCommand();
-            cmd.CommandText = @"INSERT INTO  user  (iduser,username,password,identity,firstname,lastname) VALUES (@iduser,@username,@password,@identity,@firstname,@lastname);";
+            cmd.CommandText = @"INSERT INTO  user  (username,password,identity,firstname,lastname) VALUES (@username,@password,@identity,@firstname,@lastname);";
             BindParams(cmd);
+          
             try
             {
                 await cmd.ExecuteNonQueryAsync();
