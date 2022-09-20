@@ -46,6 +46,9 @@ namespace university.Controllers
             body.Db = Db;
             int result=await body.InsertAsync();
             Console.WriteLine("inserted id="+result);
+            if(result == 0){
+                return new ConflictObjectResult(0);
+            }
             return new OkObjectResult(result);
         }
 

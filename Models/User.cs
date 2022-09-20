@@ -8,7 +8,7 @@ namespace university.Models
 {
     public class User
     {
-        public int iduser { get; set; }
+         public int iduser { get; set; }
         public string username { get; set; }
         public string password { get; set; }
         public int identity { get; set; }
@@ -30,6 +30,8 @@ namespace university.Models
         {
             using var cmd = Db.Connection.CreateCommand();
             cmd.CommandText = @"SELECT * FROM  user ;";
+            var result=await ReturnAllAsync(await cmd.ExecuteReaderAsync());
+           // Console.WriteLine(result);
             return await ReturnAllAsync(await cmd.ExecuteReaderAsync());
         }
 
@@ -44,7 +46,14 @@ namespace university.Models
                 Value = iduser,
             });
             var result = await ReturnAllAsync(await cmd.ExecuteReaderAsync());
-            return result.Count > 0 ? result[0] : null;
+            Console.WriteLine(result.Count);
+            if(result.Count > 0){
+                return result[0];
+            }
+            else {
+                return null;
+            }
+            //return result.Count > 0 ? result[0] : null;
         }
 
 
@@ -61,14 +70,14 @@ namespace university.Models
         public async Task<int> InsertAsync()
         {
             using var cmd = Db.Connection.CreateCommand();
-            cmd.CommandText = @"INSERT INTO  user  (username,password,identity,firstname,lastname) VALUES (@username,@password,@identity,@firstname,@lastname);";
+            cmd.CommandText=@"insert into user(username,password,identity,firstname,lastname) 
+            values(@username,@password,@identity,@firstname,@lastname);";
             BindParams(cmd);
-          
             try
             {
                 await cmd.ExecuteNonQueryAsync();
-                int iduser = (int) cmd.LastInsertedId;
-                return iduser; 
+                int lastInsertId = (int) cmd.LastInsertedId; 
+                return lastInsertId;
             }
             catch (System.Exception)
             {   
@@ -158,6 +167,5 @@ namespace university.Models
                 Value = lastname,
             });
         }
-
     }
 }
