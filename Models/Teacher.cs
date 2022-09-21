@@ -94,7 +94,7 @@ namespace university.Models
                     var post = new Teacher(Db)
                     {
                         idteacher = reader.GetInt32(0),
-                        iddepartment = reader.GetInt32(0)
+                        iddepartment = reader.GetInt32(1)
                     };
                     posts.Add(post);
                 }
