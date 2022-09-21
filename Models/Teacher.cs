@@ -12,15 +12,15 @@ namespace university.Models
     {
         
        public int idteacher { get; set; }
-       public int iddepartment { get; set; }       
+       public int iddepartment { get; set; }    
 
-        
-        internal Database Db { get; set; } 
+       internal Database Db { get; set; } 
 
 
         public Teacher()
         {
-            }
+
+        }
 
     
     internal Teacher(Database db)
@@ -53,13 +53,13 @@ namespace university.Models
         public async Task<int> InsertAsync()
         {
             using var cmd = Db.Connection.CreateCommand();
-            cmd.CommandText = @"INSERT INTO  teacher  ( idteacher, iddepartment) VALUES (@idteaher, @iddepartment);";
+            cmd.CommandText = @"INSERT INTO  teacher(idteacher, iddepartment) VALUES (@idteacher, @iddepartment);";
             BindParams(cmd);
+            BindId(cmd);
             try
             {
                 await cmd.ExecuteNonQueryAsync();
-                int id_user = (int) cmd.LastInsertedId;
-                return id_user; 
+                return 1; 
             }
             catch (System.Exception)
             {   
@@ -70,7 +70,7 @@ namespace university.Models
         public async Task UpdateAsync()
         {
             using var cmd = Db.Connection.CreateCommand();
-            cmd.CommandText = @"UPDATE  teacher  SET  name  = @name,  author  = @author,  isbn  = @isbn WHERE  id_book  = @id_book;";
+            cmd.CommandText = @"UPDATE  teacher  SET  idteacher  = @idteacher,  iddepartment  = @iddepartment;";
             BindParams(cmd);
             BindId(cmd);
             await cmd.ExecuteNonQueryAsync();
