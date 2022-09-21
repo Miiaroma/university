@@ -1,53 +1,89 @@
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using University.Models;
+using Microsoft.AspNetCore.Authorization;
+using System;
 
-namespace University.Controllers
+namespace university.Controllers
 {
-    [ApiController]
-    [Route("[controller]")]
-
+    [Route("api/[controller]")]
     public class StudentController : ControllerBase
     {
-    [HttpGet()]
-    public string GetAllStudents() {
-        string result="";
-            List<Student> studentsCollection=new List<Student>();
-            studentsCollection.Add( new Student(1,"Jim","Jones"));
-            studentsCollection.Add( new Student(2,"Lisa","Smith"));
-            studentsCollection.Add( new Student(3,"Ann","Smith"));
-
-            foreach(Student stu in studentsCollection){
-                result+=stu.Id+" "+stu.Fname+" "+stu.Lname+"\n";
-            }
-            return result;
-    }
-
-    [HttpGet("{id}")]
-    public IActionResult GetOneStudent(int id) {
-        Student objStudent = new Student();
-        string result=objStudent.GetOneStudent(id); 
-        if(result.Length==0)
+        public StudentController(Database db)
         {
-            result="Student not found";
-            return NotFound(result);
+            Db = db;
+        }
 
-        }   
-        return Ok(result);    
-    }
+        // GET api/Student
+        [HttpGet]
+        public async Task<IActionResult> GetAll()
+        {
+            await Db.Connection.OpenAsync();
+            var query = new Student(Db);
+            var result = await query.GetAllAsync();
+            Console.WriteLine("Test");
+            return new OkObjectResult(result);
+        }
 
-    [HttpPost()]
-    public string AddStudent() {
-        return "This will add a new student.";
-    }
+        // GET api/Student/5
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetOne(int id)
+        {
+            await Db.Connection.OpenAsync();
+            var query = new Student(Db);
+            var result = await query.FindOneAsync(id);
+            Console.WriteLine(result);
+            if (result is null)
+                return new NotFoundResult();
+            return new OkObjectResult(result);
+            
+        }
 
-    [HttpPut("{id}")]
-    public string UpdateStudent(int id) {
-        return "This will update a student which id=" + id;
-    }
+        // POST api/Student
+        [HttpPost]
+        public async Task<IActionResult> Post([FromBody]Student body)
+        {
+            await Db.Connection.OpenAsync();
+            body.Db = Db;
+            int result=await body.InsertAsync();
+            Console.WriteLine(body.idstudent);
+            Console.WriteLine(body.start_date);
+            Console.WriteLine(body.graduate_date);
+            if(result == 0){
+                return new ConflictObjectResult(0);
+            }
+            return new OkObjectResult(result);
+        }
 
-    [HttpDelete("{id}")]
-    public string DeleteStudent(int id) {
-        return "This will delete a student which id=" + id;
-    }
+        // PUT api/Student/5
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutOne(int id, [FromBody]Student body)
+        {
+            await Db.Connection.OpenAsync();
+            var query = new Student(Db);
+            var result = await query.FindOneAsync(id);
+            if (result is null)
+                return new NotFoundResult();
+            result.idstudent = body.idstudent;
+            result.start_date = body.start_date;
+            result.graduate_date = body.graduate_date;
+            await result.UpdateAsync();
+            return new OkObjectResult(result);
+        }
+
+        // DELETE api/Student/5
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteOne(int id)
+        {
+            await Db.Connection.OpenAsync();
+            var query = new Student(Db);
+            var result = await query.FindOneAsync(id);
+            if (result is null)
+                return new NotFoundResult();
+            await result.DeleteAsync();
+            return new OkObjectResult(result);
+        }
+
+
+        public Database Db { get; }
     }
 }
