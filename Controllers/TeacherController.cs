@@ -15,7 +15,7 @@ namespace university.Controllers
             Db = db;
         }
 
-        // GET api/Book
+        // GET api/Teacher
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
@@ -25,7 +25,7 @@ namespace university.Controllers
             return new OkObjectResult(result);
         }
 
-        // GET api/Book/5
+        // GET api/Teacher/5
         [HttpGet("{id}")]
         public async Task<IActionResult> GetOne(int id)
         {
@@ -37,7 +37,7 @@ namespace university.Controllers
             return new OkObjectResult(result);
         }
 
-        // POST api/Book
+        // POST api/Teacher
         [HttpPost]
         public async Task<IActionResult> Post([FromBody]Teacher body)
         {
@@ -45,10 +45,13 @@ namespace university.Controllers
             body.Db = Db;
             int result=await body.InsertAsync();
             Console.WriteLine("inserted id="+result);
+            if(result == 0){
+                return new ConflictObjectResult(0);
+            }
             return new OkObjectResult(result);
         }
 
-        // PUT api/Book/5
+        // PUT api/Teacher/5
         [HttpPut("{id}")]
         public async Task<IActionResult> PutOne(int id, [FromBody]Teacher body)
         {
@@ -63,7 +66,7 @@ namespace university.Controllers
             return new OkObjectResult(result);
         }
 
-        // DELETE api/Book/5
+        // DELETE api/Teacher/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteOne(int id)
         {
