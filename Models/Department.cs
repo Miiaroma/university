@@ -4,46 +4,44 @@ using System.Data.Common;
 using System.Threading.Tasks;
 using MySqlConnector;
 
-
-
 namespace university.Models
 {
-    public class Teacher
+    public class Department
     {
         
-       public int idteacher { get; set; }
-       public int iddepartment { get; set; }    
+       public int iddepartment { get; set; }   
+       public string name { get; set; } 
 
        internal Database Db { get; set; } 
 
 
-        public Teacher()
+        public Department()
         {
 
         }
 
     
-    internal Teacher(Database db)
+    internal Department(Database db)
         {
             Db = db;
         }
 
- public async Task<List<Teacher>> GetAllAsync()
+ public async Task<List<Department>> GetAllAsync()
         {
             using var cmd = Db.Connection.CreateCommand();
-            cmd.CommandText = @"SELECT * FROM  teacher ;";
+            cmd.CommandText = @"SELECT * FROM  department ;";
             return await ReturnAllAsync(await cmd.ExecuteReaderAsync());            
         }
 
-        public async Task<Teacher> FindOneAsync(int teacher)
+        public async Task<Department> FindOneAsync(int department)
         {
             using var cmd = Db.Connection.CreateCommand();
-            cmd.CommandText = @"SELECT * FROM  teacher  WHERE  idteacher  = @idteacher";
+            cmd.CommandText = @"SELECT * FROM  department  WHERE  department  = @iddepartment";
             cmd.Parameters.Add(new MySqlParameter
             {
-                ParameterName = "@idteacher",
+                ParameterName = "@iddepartment",
                 DbType = DbType.Int32,
-                Value = idteacher,
+                Value = iddepartment,
             });
             var result = await ReturnAllAsync(await cmd.ExecuteReaderAsync());
             return result.Count > 0 ? result[0] : null;
@@ -53,7 +51,7 @@ namespace university.Models
         public async Task<int> InsertAsync()
         {
             using var cmd = Db.Connection.CreateCommand();
-            cmd.CommandText = @"INSERT INTO  teacher(idteacher, iddepartment) VALUES (@idteacher, @iddepartment);";
+            cmd.CommandText = @"INSERT INTO  department(iddepartment, name) VALUES (@iddepartment, @name);";
             BindParams(cmd);
             BindId(cmd);
             try
@@ -69,32 +67,32 @@ namespace university.Models
 
         public async Task UpdateAsync()
         {
-            using var cmd = Db.Connection.CreateCommand();
-            cmd.CommandText = @"UPDATE  teacher  SET  iddepartment  = @iddepartment;";
+           using var cmd = Db.Connection.CreateCommand();            
+            cmd.CommandText = @"UPDATE department SET name = @name WHERE iddepartment = @iddepartment";
             BindParams(cmd);
             BindId(cmd);
-            await cmd.ExecuteNonQueryAsync();
+            await cmd.ExecuteNonQueryAsync();             
         }
 
         public async Task DeleteAsync()
         {
             using var cmd = Db.Connection.CreateCommand();
-            cmd.CommandText = @"DELETE FROM  teacher  WHERE  idteacher  = @idteacher;";
+            cmd.CommandText = @"DELETE FROM  department  WHERE  iddepartment  = @iddepartment;";
             BindId(cmd);
             await cmd.ExecuteNonQueryAsync();
         }
 
-        private async Task<List<Teacher>> ReturnAllAsync(DbDataReader reader)
+        private async Task<List<Department>> ReturnAllAsync(DbDataReader reader)
         {
-            var posts = new List<Teacher>();
+            var posts = new List<Department>();
             using (reader)
             {
                 while (await reader.ReadAsync())
                 {
-                    var post = new Teacher(Db)
+                    var post = new Department(Db)
                     {
-                        idteacher = reader.GetInt32(0),
-                        iddepartment = reader.GetInt32(1)
+                        iddepartment = reader.GetInt32(0),
+                        name = reader.GetString(1)
                     };
                     posts.Add(post);
                 }
@@ -106,9 +104,9 @@ namespace university.Models
         {
             cmd.Parameters.Add(new MySqlParameter
             {
-                ParameterName = "@idteacher",
+                ParameterName = "@iddepartment",
                 DbType = DbType.Int32,
-                Value = idteacher,
+                Value = iddepartment,
             });
         }
 
@@ -116,9 +114,9 @@ namespace university.Models
         {
             cmd.Parameters.Add(new MySqlParameter
             {
-                ParameterName = "@iddepartment",
+                ParameterName = "@name",
                 DbType = DbType.String,
-                Value = iddepartment,
+                Value = name,
             });            
         }
     }     

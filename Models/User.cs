@@ -8,7 +8,7 @@ namespace university.Models
 {
     public class User
     {
-         public int iduser { get; set; }
+        public int iduser { get; set; }
         public string username { get; set; }
         public string password { get; set; }
         public int identity { get; set; }
