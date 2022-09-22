@@ -12,7 +12,7 @@ namespace university
         public string category { get; set; }
 
         internal Database Db { get; set; }
-
+        public int old_id;
         public Administrator()
         {
         }
@@ -26,8 +26,8 @@ namespace university
         {
             using var cmd = Db.Connection.CreateCommand();
             cmd.CommandText = @"SELECT * FROM  administrator ;";
-            var result=await ReturnAllAsync(await cmd.ExecuteReaderAsync());
-           // Console.WriteLine(result);
+            var result = await ReturnAllAsync(await cmd.ExecuteReaderAsync());
+            // Console.WriteLine(result);
             return await ReturnAllAsync(await cmd.ExecuteReaderAsync());
         }
 
@@ -43,10 +43,12 @@ namespace university
             });
             var result = await ReturnAllAsync(await cmd.ExecuteReaderAsync());
             Console.WriteLine(result.Count);
-            if(result.Count > 0){
+            if (result.Count > 0)
+            {
                 return result[0];
             }
-            else {
+            else
+            {
                 return null;
             }
             //return result.Count > 0 ? result[0] : null;
@@ -61,12 +63,12 @@ namespace university
             await cmd.ExecuteNonQueryAsync();
             await txn.CommitAsync();
         }
-    
+
 
         public async Task<int> InsertAsync()
         {
             using var cmd = Db.Connection.CreateCommand();
-            cmd.CommandText=@"insert into administrator (idadministrator,category) 
+            cmd.CommandText = @"insert into administrator (idadministrator,category) 
             values(@idadministrator,@category);";
             BindParams(cmd);
             BindId(cmd);
@@ -74,10 +76,11 @@ namespace university
             Console.WriteLine(cmd.CommandText); //Debug
             try
             {
-                await cmd.ExecuteNonQueryAsync(); 
+                await cmd.ExecuteNonQueryAsync();
                 return @idadministrator;
             }
-            catch (MySqlException ex) {
+            catch (MySqlException ex)
+            {
                 Console.WriteLine("Inner Exception: " + ex.Message);
                 Console.WriteLine();
                 Console.WriteLine("Query Executed: " + cmd.CommandText);
@@ -85,18 +88,19 @@ namespace university
                 return 0;
             }
             catch (System.Exception)
-            {   
+            {
                 return 0;
-            } 
+            }
         }
 
-        public async Task UpdateAsync()
+        public async Task UpdateAsync(int actual_id)
         {
+            old_id = actual_id;
             using var cmd = Db.Connection.CreateCommand();
-            cmd.CommandText = @"UPDATE  administrator  SET  idadministrator = @idadministrator,  category = @category WHERE  idadministrator  = @idadministrator;";
+            cmd.CommandText = @"UPDATE  administrator  SET  idadministrator = @idadministrator,  category = @category WHERE  idadministrator  =@old_id";
             BindParams(cmd);
             BindId(cmd);
-            
+
             await cmd.ExecuteNonQueryAsync();
         }
 
@@ -125,7 +129,7 @@ namespace university
             }
             return posts;
         }
-        
+
         private void BindId(MySqlCommand cmd)
         {
             cmd.Parameters.Add(new MySqlParameter
@@ -143,6 +147,13 @@ namespace university
                 ParameterName = "@category",
                 DbType = DbType.String,
                 Value = category,
+            });
+
+            cmd.Parameters.Add(new MySqlParameter
+            {
+                ParameterName = "@old_id",
+                DbType = DbType.Int32,
+                Value = old_id,
             });
         }
     }

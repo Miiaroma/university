@@ -69,8 +69,9 @@ namespace university.Controllers
                 return new NotFoundResult();
             result.idadministrator = body.idadministrator;
             result.category = body.category;
-            await result.UpdateAsync();
+            await result.UpdateAsync(id);
             return new OkObjectResult(result);
+            
         }
 
         // DELETE api/Administrator/5
