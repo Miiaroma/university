@@ -9,19 +9,15 @@ using MySqlConnector;
 namespace university.Models
 {
     public class Teacher
-    {
-        
+    {        
        public int idteacher { get; set; }
-       public int iddepartment { get; set; }    
-
+       public int iddepartment { get; set; }   
        internal Database Db { get; set; } 
-
 
         public Teacher()
         {
 
         }
-
     
     internal Teacher(Database db)
         {
@@ -35,7 +31,7 @@ namespace university.Models
             return await ReturnAllAsync(await cmd.ExecuteReaderAsync());            
         }
 
-        public async Task<Teacher> FindOneAsync(int teacher)
+        public async Task<Teacher> FindOneAsync(int idteacher)
         {
             using var cmd = Db.Connection.CreateCommand();
             cmd.CommandText = @"SELECT * FROM  teacher  WHERE  idteacher  = @idteacher";
@@ -117,7 +113,7 @@ namespace university.Models
             cmd.Parameters.Add(new MySqlParameter
             {
                 ParameterName = "@iddepartment",
-                DbType = DbType.String,
+                DbType = DbType.Int16,
                 Value = iddepartment,
             });            
         }

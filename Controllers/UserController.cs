@@ -64,6 +64,9 @@ namespace university.Controllers
                 return new NotFoundResult();
             result.username = body.username;
             result.password = body.password;
+            result.identity = body.identity;
+            result.firstname = body.firstname;
+            result.lastname = body.lastname;
             await result.UpdateAsync();
             return new OkObjectResult(result);
         }
