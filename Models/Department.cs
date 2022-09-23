@@ -33,10 +33,10 @@ namespace university.Models
             return await ReturnAllAsync(await cmd.ExecuteReaderAsync());            
         }
 
-        public async Task<Department> FindOneAsync(int department)
+        public async Task<Department> FindOneAsync(int iddepartment)
         {
             using var cmd = Db.Connection.CreateCommand();
-            cmd.CommandText = @"SELECT * FROM  department  WHERE  department  = @iddepartment";
+            cmd.CommandText = @"SELECT * FROM  department  WHERE  iddepartment  = @iddepartment";
             cmd.Parameters.Add(new MySqlParameter
             {
                 ParameterName = "@iddepartment",
