@@ -94,6 +94,16 @@ namespace university.Models
             await cmd.ExecuteNonQueryAsync();
         }
 
+        /*public async Task<int> UpdateAsync()
+        {
+            using var cmd = Db.Connection.CreateCommand();
+            cmd.CommandText = @"UPDATE  user  SET  username  = @username,  password  = @password, identity = @identity, firstname=@firstname, lastname=@lastname WHERE  iduser  = @iduser;";
+            BindParams(cmd);
+            BindId(cmd);
+            int returnValue=await cmd.ExecuteNonQueryAsync();
+            return returnValue;
+        }*/
+
         public async Task DeleteAsync()
         {
             using var cmd = Db.Connection.CreateCommand();

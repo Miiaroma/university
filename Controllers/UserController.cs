@@ -69,6 +69,24 @@ namespace university.Controllers
             result.lastname = body.lastname;
             await result.UpdateAsync();
             return new OkObjectResult(result);
+
+           /* Console.WriteLine("update called");
+            await Db.Connection.OpenAsync();
+            var query = new User(Db);
+            body.password = BCrypt.Net.BCrypt.HashPassword(body.password);
+            var result = await query.FindOneAsync(id);
+            if (result is null)
+                return new NotFoundResult();
+            int updateTest = await result.UpdateAsync();
+            if (updateTest == 0)
+            {
+                return new BadRequestResult();
+            }
+            else
+            {
+                return new OkObjectResult(updateTest);
+            }*/
+            
         }
 
         // DELETE api/User/5
