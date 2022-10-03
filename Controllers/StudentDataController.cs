@@ -4,6 +4,7 @@ using university.Models;
 
 namespace university.Controllers
 {
+    //[BasicAuthorization]
     [Route("api/[controller]")]
     public class StudentdataController : ControllerBase
     {

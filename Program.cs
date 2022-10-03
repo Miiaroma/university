@@ -14,13 +14,18 @@ builder.Services.AddTransient(_ => new Database(builder.Configuration.GetConnect
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-/* if (app.Environment.IsDevelopment())
+if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
-} */
-    app.UseSwagger();
-    app.UseSwaggerUI();
+}
+    
+app.UseCors(builder =>
+{
+    builder.AllowAnyOrigin()
+        .AllowAnyMethod()
+        .AllowAnyHeader();
+});
 
 app.UseHttpsRedirection();
 
@@ -28,12 +33,16 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-//example about MiddleWare function
-/*app.Use(async (contex, next)=>
+
+//setting the connection string for development environment
+
+if (app.Environment.IsDevelopment()){
+app.Use(async (contex, next)=>
 {
-    Console.WriteLine("Middleware excuted");
-    await next();
+     MyEnvironment.SetMySQLConnention();
+     await next();
 }
-);*/
+);
+}
 
 app.Run();

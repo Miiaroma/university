@@ -38,7 +38,7 @@ CREATE TABLE `administrator` (
 
 LOCK TABLES `administrator` WRITE;
 /*!40000 ALTER TABLE `administrator` DISABLE KEYS */;
-INSERT INTO `administrator` VALUES (1,'a1');
+INSERT INTO `administrator` VALUES (24,'b2'),(25,'a2'),(26,'c1');
 /*!40000 ALTER TABLE `administrator` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -63,7 +63,7 @@ CREATE TABLE `course` (
 
 LOCK TABLES `course` WRITE;
 /*!40000 ALTER TABLE `course` DISABLE KEYS */;
-INSERT INTO `course` VALUES (200,'C# Basics',5),(201,'SQL Basics',3),(301,'History of Finland',5);
+INSERT INTO `course` VALUES (11,'Java 8',4),(12,'C#',4),(13,'C++',5),(14,'History of Fnland',10);
 /*!40000 ALTER TABLE `course` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -87,7 +87,7 @@ CREATE TABLE `department` (
 
 LOCK TABLES `department` WRITE;
 /*!40000 ALTER TABLE `department` DISABLE KEYS */;
-INSERT INTO `department` VALUES (100,'ict'),(101,'history');
+INSERT INTO `department` VALUES (101,'ICT'),(201,'History'),(301,'Biology');
 /*!40000 ALTER TABLE `department` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -112,7 +112,7 @@ CREATE TABLE `grade` (
   CONSTRAINT `cource_grade` FOREIGN KEY (`idcourse`) REFERENCES `course` (`idcourse`) ON DELETE RESTRICT ON UPDATE CASCADE,
   CONSTRAINT `student_grade` FOREIGN KEY (`idstudent`) REFERENCES `student` (`idstudent`) ON DELETE RESTRICT ON UPDATE CASCADE,
   CONSTRAINT `teacher_grade` FOREIGN KEY (`idteacher`) REFERENCES `teacher` (`idteacher`) ON DELETE RESTRICT ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -121,7 +121,7 @@ CREATE TABLE `grade` (
 
 LOCK TABLES `grade` WRITE;
 /*!40000 ALTER TABLE `grade` DISABLE KEYS */;
-INSERT INTO `grade` VALUES (1,'2022-09-20',2,3,200,4),(2,'2022-09-21',2,3,201,4),(3,'2022-09-20',2,3,201,5);
+INSERT INTO `grade` VALUES (13,'2022-09-20',18,21,11,5),(14,'2022-09-20',18,22,12,3),(15,'2021-07-20',18,23,13,4),(16,'2020-07-20',19,21,12,5),(17,'2020-04-20',19,22,13,3),(18,'2020-04-20',19,23,14,4);
 /*!40000 ALTER TABLE `grade` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -147,7 +147,7 @@ CREATE TABLE `student` (
 
 LOCK TABLES `student` WRITE;
 /*!40000 ALTER TABLE `student` DISABLE KEYS */;
-INSERT INTO `student` VALUES (2,'2022-09-20',NULL);
+INSERT INTO `student` VALUES (18,'2021-01-05','2022-01-01'),(19,'2021-11-05','2024-01-01'),(20,'2019-11-05','2021-01-01');
 /*!40000 ALTER TABLE `student` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -174,7 +174,7 @@ CREATE TABLE `teacher` (
 
 LOCK TABLES `teacher` WRITE;
 /*!40000 ALTER TABLE `teacher` DISABLE KEYS */;
-INSERT INTO `teacher` VALUES (3,100);
+INSERT INTO `teacher` VALUES (21,101),(22,201),(23,301);
 /*!40000 ALTER TABLE `teacher` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -194,7 +194,7 @@ CREATE TABLE `user` (
   `lastname` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`iduser`),
   UNIQUE KEY `username_UNIQUE` (`username`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -203,7 +203,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (1,'user01','pass1',1,'Lisa','Admin1'),(2,'user02','pass2',2,'Bob','Student1'),(3,'user4','$2a$11$FqU8KxB4if.DfXufHOYsUO35q2CRFvPNmopfAcBBu3pKKC5pT3MnS',3,'Ann','Teacher1'),(5,'user05','$2a$11$5bANriWpp9cFkxYiP93MiOttJp1Jel0AVXVzlPLzagiEVuNGzNdhi',2,'Jussi','Testi'),(9,'user07','$2a$11$dWh2.AIe13ymslkZRS.wc.oE8RzhKFFN/o4Szt9vqzHlCVYLykjRS',3,'Matti','Mainio');
+INSERT INTO `user` VALUES (18,'student01','$2a$11$xpmF95Rlr8Ygln2ZrdbGXO1/H.MEejJZlTfYTOmPfcn4aa03VtcEK',1,'Bob','Student'),(19,'student02','$2a$11$xu2y8H9.uauvoETWLg1uguL9KT1zmHGbqiuEYMgkX5o1phev9c18u',1,'Lisa','Student'),(20,'student03','$2a$11$KPdflAL7Q7nai8Oy5q3qEOsiUoq90lyndD5ijFru6B1J6FP14BN9C',1,'Ann','Student'),(21,'teacher01','$2a$11$AFywRFShYP/q6cuwFfjk1u7H8yWtOwqv9wXGSFsTu14F04SEnFhfe',3,'Matt','Teacher'),(22,'teacher02','$2a$11$Att3qdrnIFplw9w5GhThhe3mm92z4HwNqtBjjmjUdIITcivsgYf2W',3,'Bill','Teacher'),(23,'teacher03','$2a$11$LbRUs0KpnAeSvnLVA5jFA.0ZabkDVW7bjocaZs9dij5RCETH5cmq2',3,'Jill','Teacher'),(24,'admin01','$2a$11$JgqgpuaDhGonotmyO2mvnuPgHCZSJHG86uU/q9ZsNBYc6gZ3hQyhq',2,'Hank','Admin'),(25,'admin02','$2a$11$pXa6B5S40AD2h9GzjM/Oc.eWwDOeAUDoR3b7UWu/t/p4lwHX1n9gu',2,'Bill','Admin'),(26,'admin03','$2a$11$TuQxgtAIo6E42dS4YLzaxeC5Z7palaYcf3JYfdLVnivFDVVzv.up2',2,'Marianne','Admin');
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -216,4 +216,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-09-20 15:42:42
+-- Dump completed on 2022-10-03 15:49:46
