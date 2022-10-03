@@ -22,17 +22,27 @@ namespace university.Controllers
             return new OkObjectResult(result);
         }
 
-        [HttpGet("student/{id}")]
+        /*[HttpGet("student/{id}")]
         public async Task<IActionResult> GetOneStudentData(int id)
         {
             await Db.Connection.OpenAsync();
             var query = new Studentdata(Db);
             var result = await query.GetOneStudentAsync(id);
             return new OkObjectResult(result);
+        }*/   
+
+         [HttpGet("student/{username}")]
+        public async Task<IActionResult> GetOneStudentData(string username)
+        {
+            await Db.Connection.OpenAsync();
+            var query = new Studentdata(Db);
+            var result = await query.GetOneStudentAsync(username);
+            return new OkObjectResult(result);
         }    
+ 
 
 
-        /*[HttpGet("grade")]
+        [HttpGet("grade")]
         public async Task<IActionResult> GetStudentGrades()
         {
             await Db.Connection.OpenAsync();
@@ -47,7 +57,7 @@ namespace university.Controllers
             var query = new Studentgrade(Db);
             var result = await query.GetOneStudentGrades(id);
             return new OkObjectResult(result);
-        } */  
+        }  
         public Database Db { get; }
     }
 }
