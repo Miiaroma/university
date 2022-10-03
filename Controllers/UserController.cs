@@ -52,29 +52,23 @@ namespace university.Controllers
             return new OkObjectResult(result);
         }
 
-        // PUT api/User/5
+       // PUT api/User/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutOne(int id, [FromBody]User body)
+        public async Task<IActionResult> PutOne(int id, [FromBody] User body)
         {
+            Console.WriteLine("update called");
             await Db.Connection.OpenAsync();
+            Console.WriteLine(body);
             var query = new User(Db);
             body.password = BCrypt.Net.BCrypt.HashPassword(body.password);
+    
             var result = await query.FindOneAsync(id);
-            if (result is null)
-                return new NotFoundResult();
-            result.username = body.username;
-            result.password = body.password;
-            result.identity = body.identity;
-            result.firstname = body.firstname;
-            result.lastname = body.lastname;
-            await result.UpdateAsync();
-            return new OkObjectResult(result);
+            result.firstname=body.firstname;
+            result.lastname=body.lastname;
+            result.username=body.username;
+            result.password=body.password;
+            result.identity=body.identity;
 
-           /* Console.WriteLine("update called");
-            await Db.Connection.OpenAsync();
-            var query = new User(Db);
-            body.password = BCrypt.Net.BCrypt.HashPassword(body.password);
-            var result = await query.FindOneAsync(id);
             if (result is null)
                 return new NotFoundResult();
             int updateTest = await result.UpdateAsync();
@@ -85,8 +79,7 @@ namespace university.Controllers
             else
             {
                 return new OkObjectResult(updateTest);
-            }*/
-            
+            }
         }
 
         // DELETE api/User/5
@@ -101,7 +94,6 @@ namespace university.Controllers
             await result.DeleteAsync();
             return new OkObjectResult(result);
         }
-
 
         public Database Db { get; }
     }
