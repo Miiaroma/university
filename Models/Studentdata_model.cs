@@ -71,9 +71,7 @@ namespace university
                 }
             }
             return posts;
-        }
-
-       
+        }      
 
     }
 }

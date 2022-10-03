@@ -31,7 +31,7 @@ namespace university.Controllers
         }    
 
 
-/*[HttpGet("course")]
+        [HttpGet("course")]
         public async Task<IActionResult> GetTeacherCourses()
         {
             await Db.Connection.OpenAsync();
@@ -46,7 +46,7 @@ namespace university.Controllers
             var query = new Teachercourse(Db);
             var result = await query.GetOneTeacherCoursesAsync(id);
             return new OkObjectResult(result);
-        }  */
+        } 
 
          
         public Database Db { get; }
