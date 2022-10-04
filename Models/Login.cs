@@ -8,7 +8,7 @@ namespace university
 {
     public class Login
     {
-        //public string username { get; set; }
+        public string username { get; set; }
         public string password { get; set; }
         public int identity { get; set; }
 
@@ -37,8 +37,8 @@ namespace university
             var result = await ReturnPassword(await cmd.ExecuteReaderAsync());
             return result;
         }
-
-        private async Task<Login> ReturnPassword(DbDataReader reader)
+        
+        /*private async Task<Login> ReturnPassword(DbDataReader reader)
         {
             var objectLogin = new Login();
             using (reader)
@@ -50,8 +50,24 @@ namespace university
             }
 
             return objectLogin;
+        }*/
+         private async Task<string> ReturnPassword(DbDataReader reader)
+        {
+            var loginUser = new Login();
+            using (reader)
+            {
+                while (await reader.ReadAsync())
+                {
+                    var user = new Login(Db)
+                    {
+                        password = reader.GetString(0)
+                    };
+                    loginUser=user;
+                }
+            }
+
+            return loginUser.password;
         }
-        
     
     }
 }

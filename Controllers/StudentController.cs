@@ -5,6 +5,7 @@ using System;
 
 namespace university.Controllers
 {
+    [BasicAuthorization]
     [Route("api/[controller]")]
     public class StudentController : ControllerBase
     {

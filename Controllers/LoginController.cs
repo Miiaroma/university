@@ -1,5 +1,8 @@
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using university.Models;
+using Microsoft.AspNetCore.Authorization;
+using System;
+using university;
 
 namespace university.Controllers
 {
@@ -20,9 +23,9 @@ namespace university.Controllers
             Console.WriteLine(body.password);
             await Db.Connection.OpenAsync();
             var query = new Login(Db);
-            var dataFromDb = await query.GetPassword(body.username);
+            var result = await query.GetPassword(body.username);
    
-            if (dataFromDb is null || ! BCrypt.Net.BCrypt.Verify(body.password, dataFromDb.password))
+            if (result is null || ! BCrypt.Net.BCrypt.Verify(body.password, result))
             {
                 // authentication failed
                 return new OkObjectResult(false);
@@ -30,12 +33,13 @@ namespace university.Controllers
             else
             {
                 // authentication successful
-                return new OkObjectResult(dataFromDb.identity);
+                return new OkObjectResult(true);
+                Singleton singObject=Singleton.Instance;
+                singObject.Username=body.username;
+                singObject.Password=body.password;
             }
             
-        }
-
-    
+        }   
 
         public Database Db { get; }
     }

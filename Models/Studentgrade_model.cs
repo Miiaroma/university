@@ -17,7 +17,7 @@ namespace university
         public string? Gradedate { get; set; }
         public string? Teacher { get; set; }
         //database
-        internal Database Db { get; set; }
+        internal Database? Db { get; set; }
 
         public Studentgrade()
         {
@@ -34,22 +34,28 @@ namespace university
             cmd.CommandText = @"select name as 'course name',grade,greditpoints,date_format(date,'%d.%m.%Y') as 'date', concat(firstname,' ', lastname) as 'teacher' from course inner join grade on course.idcourse=grade.idcourse
                 inner join teacher on teacher.idteacher=grade.idteacher inner join user on iduser=teacher.idteacher ;";
 
-            var result = await ReturnGradesAsync(await cmd.ExecuteReaderAsync());
+            //var result = await ReturnGradesAsync(await cmd.ExecuteReaderAsync());
             return await ReturnGradesAsync(await cmd.ExecuteReaderAsync());
         }
-        public async Task<Studentgrade> GetOneStudentGrades(int idstudent)
+        public async Task<List<Studentgrade>> GetOneStudentGrades(string username)
         {
             using var cmd = Db.Connection.CreateCommand();
-            cmd.CommandText = @"select name as 'course name',grade,greditpoints,date_format(date,'%d.%m.%Y') as 'date', concat(firstname,' ', lastname) as 'teacher' from course inner join grade on course.idcourse=grade.idcourse
-                inner join teacher on teacher.idteacher=grade.idteacher inner join user on iduser=teacher.idteacher where idstudent=@idstudent;";
+            cmd.CommandText = @"select name as 'course name',grade,greditpoints,
+            date_format(date,'%d.%m.%Y') as 'date', concat(user.firstname,' ', user.lastname) as 'teacher' 
+            from course inner join grade on course.idcourse=grade.idcourse 
+            inner join teacher on teacher.idteacher=grade.idteacher 
+            inner join user on user.iduser=teacher.idteacher 
+            inner join student on student.idstudent=grade.idstudent 
+            inner join user users on users.iduser=student.idstudent 
+            where users.username=@username;";
             cmd.Parameters.Add(new MySqlParameter
             {
-                ParameterName = "@idstudent",
-                DbType = DbType.Int32,
-                Value = idstudent,
+                ParameterName = "@username",
+                DbType = DbType.String,
+                Value = username,
             });
-            var result = await ReturnGradesAsync(await cmd.ExecuteReaderAsync());
-            return result.Count > 0 ? result[0] : null;
+            //var result = await ReturnGradesAsync(await cmd.ExecuteReaderAsync());
+                return await ReturnGradesAsync(await cmd.ExecuteReaderAsync());
         } 
         
 

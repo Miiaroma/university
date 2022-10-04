@@ -1,10 +1,9 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using university.Models;
 
 namespace university.Controllers
 {
-    //[BasicAuthorization]
+     [BasicAuthorization]
     [Route("api/[controller]")]
     public class StudentdataController : ControllerBase
     {
@@ -23,16 +22,7 @@ namespace university.Controllers
             return new OkObjectResult(result);
         }
 
-        /*[HttpGet("student/{id}")]
-        public async Task<IActionResult> GetOneStudentData(int id)
-        {
-            await Db.Connection.OpenAsync();
-            var query = new Studentdata(Db);
-            var result = await query.GetOneStudentAsync(id);
-            return new OkObjectResult(result);
-        }*/   
-
-         [HttpGet("student/{username}")]
+        [HttpGet("student/{username}")]
         public async Task<IActionResult> GetOneStudentData(string username)
         {
             await Db.Connection.OpenAsync();
@@ -40,7 +30,6 @@ namespace university.Controllers
             var result = await query.GetOneStudentAsync(username);
             return new OkObjectResult(result);
         }    
- 
 
 
         [HttpGet("grade")]
@@ -51,14 +40,14 @@ namespace university.Controllers
             var result = await query.GetStudentGrades();
             return new OkObjectResult(result);
         } 
-        [HttpGet("grade/{id}")]
-        public async Task<IActionResult> GetOneStudentGrades(int id)
+        [HttpGet("grade/{username}")]
+        public async Task<IActionResult> GetOneStudentGrades(string username)
         {
             await Db.Connection.OpenAsync();
             var query = new Studentgrade(Db);
-            var result = await query.GetOneStudentGrades(id);
+            var result = await query.GetOneStudentGrades(username);
             return new OkObjectResult(result);
-        }  
+        }   
         public Database Db { get; }
     }
 }
