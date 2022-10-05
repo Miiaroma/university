@@ -4,18 +4,18 @@ using System.Data.Common;
 using System.Threading.Tasks;
 using MySqlConnector;
 
-namespace university.Models
+namespace university
 {
     public class User
     {
-        public int iduser { get; set; }
-        public string username { get; set; }
-        public string password { get; set; }
-        public int identity { get; set; }
-        public string firstname { get; set; }
-        public string lastname { get; set; }
+        public int? iduser { get; set; }
+        public string? username { get; set; }
+        public string? password { get; set; }
+        public int? identity { get; set; }
+        public string? firstname { get; set; }
+        public string? lastname { get; set; }
 
-        internal Database Db { get; set; }
+        internal Database? Db { get; set; }
 
         public User()
         {
@@ -46,7 +46,7 @@ namespace university.Models
                 Value = iduser,
             });
             var result = await ReturnAllAsync(await cmd.ExecuteReaderAsync());
-            Console.WriteLine(result.Count);
+            //Console.WriteLine(result.Count);
             if(result.Count > 0){
                 return result[0];
             }
@@ -83,9 +83,9 @@ namespace university.Models
             {   
                 return 0;
             } 
-        }       
+        }
 
-         public async Task<int> UpdateAsync()
+        public async Task<int> UpdateAsync()
         {
             using var cmd = Db.Connection.CreateCommand();
             
@@ -96,7 +96,6 @@ namespace university.Models
             int returnValue=await cmd.ExecuteNonQueryAsync();
             return returnValue;
         }
-       
 
         public async Task DeleteAsync()
         {

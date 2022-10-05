@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using System;
 using university;
+using university.Models;
 
 namespace university.Controllers
 {
@@ -39,7 +40,7 @@ namespace university.Controllers
                 singObject.Password=body.password;
             }
             
-        }   
+        }    
 
         public Database Db { get; }
     }

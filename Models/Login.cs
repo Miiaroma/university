@@ -8,11 +8,10 @@ namespace university
 {
     public class Login
     {
-        public string username { get; set; }
-        public string password { get; set; }
-        public int identity { get; set; }
+        public string? username { get; set; }
+        public string? password { get; set; }
 
-        internal Database Db { get; set; }
+        internal Database? Db { get; set; }
 
         public Login()
         {
@@ -24,10 +23,10 @@ namespace university
         }
 
 
-        public async Task<Login> GetPassword(string username)
+        public async Task<string> GetPassword(string username)
         {
             using var cmd = Db.Connection.CreateCommand();
-            cmd.CommandText = @"SELECT  password, identity   FROM  user  WHERE  username  = @username";
+            cmd.CommandText = @"SELECT  password   FROM  user  WHERE  username  = @username";
             cmd.Parameters.Add(new MySqlParameter
             {
                 ParameterName = "@username",
@@ -37,21 +36,8 @@ namespace university
             var result = await ReturnPassword(await cmd.ExecuteReaderAsync());
             return result;
         }
-        
-        /*private async Task<Login> ReturnPassword(DbDataReader reader)
-        {
-            var objectLogin = new Login();
-            using (reader)
-            {
-                await reader.ReadAsync();
-                objectLogin.password=reader.GetString(0);
-                objectLogin.identity=reader.GetInt32(1);
 
-            }
-
-            return objectLogin;
-        }*/
-         private async Task<string> ReturnPassword(DbDataReader reader)
+        private async Task<string> ReturnPassword(DbDataReader reader)
         {
             var loginUser = new Login();
             using (reader)
@@ -68,6 +54,7 @@ namespace university
 
             return loginUser.password;
         }
+        
     
     }
 }
