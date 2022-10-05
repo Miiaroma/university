@@ -8,9 +8,9 @@ namespace university
 {
     public class Student
     {
-        public int idstudent { get; set; }
-        public DateTime start_date { get; set; }
-        public DateTime graduate_date { get; set; }
+        public int? idstudent { get; set; }
+        public DateTime? start_date { get; set; }
+        public DateTime? graduate_date { get; set; }
 
         internal Database Db { get; set; }
 
@@ -99,6 +99,7 @@ namespace university
             await cmd.ExecuteNonQueryAsync();
         }
 
+        
         private async Task<List<Student>> ReturnAllAsync(DbDataReader reader)
         {
             var posts = new List<Student>();
@@ -109,9 +110,15 @@ namespace university
                     var post = new Student(Db)
                     {
                         idstudent = reader.GetInt32(0),
-                        start_date = reader.GetDateTime(1),
-                        graduate_date = reader.GetDateTime(2)
+                        start_date = null,
+                        graduate_date = null
                     };
+                    if (!reader.IsDBNull(1))
+                        post.start_date = reader.GetDateTime(1);
+
+                    if (!reader.IsDBNull(2))
+                        post.graduate_date = reader.GetDateTime(2);
+
                     posts.Add(post);
                 }
             }

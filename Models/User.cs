@@ -118,9 +118,14 @@ namespace university
                         username = reader.GetString(1),
                         password = reader.GetString(2),
                         identity = reader.GetInt32(3),
-                        firstname = reader.GetString(4),
-                        lastname = reader.GetString(5)
+                        firstname = null,
+                        lastname = null
                     };
+                    if (!reader.IsDBNull(4))
+                        post.firstname = reader.GetString(4);
+
+                    if (!reader.IsDBNull(5))
+                        post.lastname = reader.GetString(5);
                     posts.Add(post);
                 }
             }
